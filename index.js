@@ -76,16 +76,8 @@ const generateID = () => {
     return id
 }
 
-app.post('/api/persons', (request,response) => {
+app.post('/api/persons', (request,response, next) => {
     const body = request.body
-
-    if(body.name === undefined ){
-        return response.status(400).json({error:"Missing name"})
-    }
-
-    if(!body.number ){
-        return response.status(400).json({error:"Missing number"})
-    }
 
     const contact = new Contact ({
         name : body.name,
@@ -95,6 +87,7 @@ app.post('/api/persons', (request,response) => {
     contact.save().then(savedContact => {
         response.json(savedContact)
     })
+    .catch(error => next(error))
     
 })
 
@@ -108,6 +101,8 @@ const errorHandler = (error, request, response,next) => {
 
     if(error.name === "CastError"){
         return response.status(404).send({error: 'malformed id'})
+    } else if (error.name === "ValidationError"){
+        return response.status(400).json({error:error.message})
     }
 
     next(error)
