@@ -6,13 +6,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "build:ui": "rm -rf build && cd /Users/conorladrigan/Programming/FSO/2-CommunicatingWithServer/exercises/phonebook && npm run build --prod && cp -r build /Users/conorladrigan/Programming/FSO/3-ProgrammingAServerWithNodeJSAndExpress/exercises/phonebook",
+    "deploy": "git push heroku HEAD:main --force",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
+    "logs:prod": "heroku logs --tail"
   },
   "author": "Conor L",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "mongoose": "^5.12.6",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
